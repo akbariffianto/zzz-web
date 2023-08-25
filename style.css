@@ -200,12 +200,12 @@ figure{
  object-position: top;
 }
 
-.desc-content{
+.desc-article{
 background-color: #00076f;
 text-align: center;
 }
 
-.desc-content p{
+.desc-article p{
   padding: 10px 10px 10px 10px;
   justify-content: center;
   align-items: center;
