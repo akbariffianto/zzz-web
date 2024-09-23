@@ -1,50 +1,51 @@
+document.querySelectorAll('.nav-link').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+  });
+});
+
 const menuToggle = document.querySelector(".menu-toggle");
 const navMenu = document.querySelector(".nav-menu");
 
-menuToggle.addEventListener("click",function() {
+menuToggle.addEventListener("click", function() {
     menuToggle.classList.toggle("active");
     navMenu.classList.toggle("active");
 });
 
-document.querySelectorAll('.nav-link').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            smoothScrollTo(target.offsetTop, 1000);
-        }
-    });
-});
+// Initialize slide index and show the first slide
+let slideIndex = 1;
+updateSlides(slideIndex); // Change this to updateSlides instead of showSlides
 
-function smoothScrollTo(destination, duration) {
-    const start = window.scrollY;
-    const distance = destination - start;
-    let startTime = null;
-
-    function animation(currentTime) {
-        if (!startTime) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const run = ease(timeElapsed, start, distance, duration);
-        window.scrollTo(0, run);
-        if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-
-    function ease(t, b, c, d) {
-        t /= d / 2;
-        if (t < 1) return c / 2 * t * t + b;
-        t--;
-        return -c / 2 * (t * (t - 2) - 1) + b;
-    }
-
-    requestAnimationFrame(animation);
+// Next/previous controls
+function plusSlides(n) {
+  updateSlides(slideIndex += n);
 }
 
-const dropdownButtons = document.querySelectorAll('.dropdown-button');
+// Thumbnail image controls
+function currentSlide(n) {
+  updateSlides(slideIndex = n);
+}
 
-dropdownButtons.forEach(button => {
-  button.addEventListener('click', function() {
-    this.classList.toggle('clicked');
-  });
-});
+function updateSlides(n) {
+  const slides = document.getElementsByClassName("mySlides");
+  const dots = document.getElementsByClassName("dot");
+  
+  if (n > slides.length) { slideIndex = 1 }
+  if (n < 1) { slideIndex = slides.length }
+
+  // Hide all slides
+  Array.from(slides).forEach(slide => slide.style.display = "none");
+  
+  // Remove active status from all dots
+  Array.from(dots).forEach(dot => dot.classList.remove("active"));
+
+  // Show current slide and mark dot as active
+  slides[slideIndex - 1].style.display = "block";
+  dots[slideIndex - 1].classList.add("active");
+}
 
